@@ -1,0 +1,15 @@
+{
+  "name": "chat_random",
+  "version": "1.0.0",
+  "description": "A simple chat application that uses NodeJS and ES6/ES7",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "Michal Penn",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.1.1"
+  }
+}
