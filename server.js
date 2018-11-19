@@ -3,59 +3,39 @@ const http = require("http");
 const app = express();
 const server = http.Server(app);
 const io = require("socket.io")(server);
+const Socket = require("./handlers/socket");
 let users = [];
 
 server.listen(3333, () => {
   console.log("the development server is running at port 3333");
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
-
-app.get("/styles/index.css", (req, res) => {
-  res.sendFile(__dirname + "/styles/index.css");
-});
-
-app.get("/javascript/main.js", (req, res) => {
-  res.sendFile(__dirname + "/javascript/main.js");
-});
+app.use(express.static("public"));
 
 io.on("connection", socket => {
+  const handler = new Socket(socket, io);
   let name = "";
   socket.on("has connected", user => {
     name = user.username;
     users.push(user);
     io.emit("has connected", { username: user.username, usersList: users });
 
-    if (users.length === 2) {
-      users.map(user => {
-        user.available = false;
-      });
-      console.log("users: ", users);
-      io.emit("match", { usersList: users });
-    }
+    handler.findMatch();
   });
 
   socket.on("disconnect", () => {
     users = users.filter(user => user.username !== name);
     io.emit("has disconnected", { username: name, usersList: users });
+
+    handler.disconnect();
   });
 
   socket.on("new message", data => {
-    let matchedUser = users.find(user => {
-      return user.username === data.username && !user.available;
-    });
     let hop = data.message.startsWith("/hop");
     console.log("data - message: ", data.message);
-    if (matchedUser && hop) {
-      //unmatch the other person who is matched
-      //check who is available & hasnt been matched
-      //match them
-      io.emit("new message", data);
-    } else {
-      io.emit("new message", data);
-    }
+    if (hop && handler.matched()) return handler.hop();
+
+    handler.message(data);
   });
 
   // socket.on("match users", data => {

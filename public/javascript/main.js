@@ -153,9 +153,13 @@ socket.on("new message", data => {
   parseMessage(data);
 });
 
-socket.on("match", data => {
+socket.on("matched", data => {
   console.log("match data: ", data);
 });
+
+socket.on("waiting", () => console.log("Waiting for user..."));
+
+socket.on("unmatched", () => console.log("UM.. Waiting for user..."));
 
 // socket.on("users are matched", data => {
 //   console.log("users are matched - data: ", data);
