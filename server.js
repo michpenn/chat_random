@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 const http = require("http");
 const app = express();
@@ -32,24 +34,8 @@ io.on("connection", socket => {
 
   socket.on("new message", data => {
     let hop = data.message.startsWith("/hop");
-    console.log("data - message: ", data.message);
     if (hop && handler.matched()) return handler.hop();
 
     handler.message(data);
   });
-
-  // socket.on("match users", data => {
-  //   // console.log("users are matched: ", data);
-  //   //find user 1 & user 2 in users, make unavailable, add other username to previous match
-  //   users.find(user => user.username == data.username1).available = false;
-  //   users
-  //     .find(user => user.username == data.username1)
-  //     .matchedWith.push(data.username2);
-  //   users.find(user => user.username == data.username2).available = false;
-  //   users
-  //     .find(user => user.username == data.username2)
-  //     .matchedWith.push(data.username1);
-  //   //console.log("users are matched: ", data, users);
-  //   io.emit("users are matched", { userList: users });
-  // });
 });

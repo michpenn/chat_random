@@ -14,39 +14,6 @@ updateUsers = list => {
   }
 };
 
-checkForMatch = list => {
-  let available;
-  let unavailable;
-  if (list.length < 2) {
-    return false;
-  } else {
-    available = list.filter(user => user.available === true);
-    unavailable = list.filter(user => user.available !== true);
-
-    if (unavailable.length > 1) {
-      return false;
-    } else if (unavailable.length === 1) {
-      console.log("hop goes here!!");
-      return false;
-    } else if (available.length > 1) {
-      return available.slice(0, 2);
-    } else {
-      return false;
-    }
-  }
-};
-
-matchUsers = (username1, username2) => {
-  socket.emit("match users", {
-    username1,
-    username2
-  });
-};
-
-messageHasCommand = message => {
-  return message.startsWith("/");
-};
-
 addMessage = messageObj => {
   $(".messages").append(
     "<li><b>" + messageObj.username + "</b>: " + messageObj.message + "</li>"
@@ -120,7 +87,7 @@ $("#message-form").submit(event => {
 });
 
 socket.on("has connected", data => {
-  $("#users").html("");
+  $(".users").html("");
   updateUsers(data.usersList);
   $(".messages").append(
     "<li><i><b>" + data.username + "</b> has connected</i></li>"
@@ -128,7 +95,7 @@ socket.on("has connected", data => {
 });
 
 socket.on("has disconnected", data => {
-  $("#users").html("");
+  $(".users").html("");
   updateUsers(data.usersList);
   $(".messages").append(
     "<li><i><b>" + data.username + "</b> has disconnected</i></li>"
@@ -141,10 +108,12 @@ socket.on("new message", data => {
 
 socket.on("matched", data => {
   console.log("match data: ", data);
+  $(".messages").append(
+    "<li><i><b>" + "You've been matched!" + "</b></i></li>"
+  );
 });
 
 socket.on("waiting", () => {
-  console.log("Waiting for user...");
   $(".messages").append(
     "<li><i><b>" +
       "Waiting to connect you to the next available user!" +
@@ -153,14 +122,9 @@ socket.on("waiting", () => {
 });
 
 socket.on("unmatched", () => {
-  console.log("UM.. Waiting for user...");
   $(".messages").append(
     "<li><i><b>" +
       "Waiting to connect you to the next available user!" +
       "</b></i></li>"
   );
 });
-
-// socket.on("users are matched", data => {
-//   console.log("users are matched - data: ", data);
-// });
