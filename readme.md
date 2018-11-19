@@ -1,4 +1,4 @@
-#Chat Random
+# Chat Random
 
 The aim of this project was to create a chat application with the following functionality:
 
