@@ -3,8 +3,6 @@ const socket = io();
 class User {
   constructor(username) {
     this.username = username;
-    this.available = true;
-    this.matchedWith = [];
   }
 }
 
@@ -107,7 +105,6 @@ socket.on("new message", data => {
 });
 
 socket.on("matched", data => {
-  console.log("match data: ", data);
   $(".messages").append(
     "<li><i><b>" + "You've been matched!" + "</b></i></li>"
   );
