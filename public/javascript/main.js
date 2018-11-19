@@ -8,19 +8,9 @@ class User {
   }
 }
 
-checkUsers = list => {
-  if (list.length < 2) {
-    $("#users").append(
-      "<li><i>" +
-        "You are in line to talk to the next available user!" +
-        "</i></li>"
-    );
-  }
-};
-
 updateUsers = list => {
   for (let i = 0; i < list.length; i++) {
-    $("#users").append("<li><b>" + list[i].username + "</b></li>");
+    $(".users").append("<li><h3><b>" + list[i].username + "</b></h3></li>");
   }
 };
 
@@ -58,7 +48,7 @@ messageHasCommand = message => {
 };
 
 addMessage = messageObj => {
-  $("#messages").append(
+  $(".messages").append(
     "<li><b>" + messageObj.username + "</b>: " + messageObj.message + "</li>"
   );
 };
@@ -98,13 +88,13 @@ $("#login-form").submit(event => {
       .val()
       .trim() == ""
   ) {
-    alert("Invalid Username");
+    $(event.target).addClass("was-validated");
   } else {
     $username = $("#username").val();
-    $("#login-area").hide();
-    $("#chat-area").show();
+    $(".login-area").hide();
+    $(".chat-area").show();
 
-    $("#messages").html("");
+    $(".messages").html("");
 
     socket.emit("has connected", new User($username));
   }
@@ -118,33 +108,29 @@ $("#message-form").submit(event => {
       .val()
       .trim() == ""
   ) {
-    alert("You can't send empty messages");
+    $(event.target).addClass("was-validated");
   } else {
     socket.emit("new message", {
       username: $username,
       message: $("#message").val()
     });
     $("#message").val("");
+    $(event.target).removeClass("was-validated");
   }
 });
 
 socket.on("has connected", data => {
   $("#users").html("");
   updateUsers(data.usersList);
-  checkUsers(data.usersList);
-  $("#messages").append(
+  $(".messages").append(
     "<li><i><b>" + data.username + "</b> has connected</i></li>"
   );
-  //   let toMatch = checkForMatch(data.usersList);
-  //   if (toMatch) {
-  //     matchUsers(toMatch[0].username, toMatch[1].username);
-  //   }
 });
 
 socket.on("has disconnected", data => {
   $("#users").html("");
   updateUsers(data.usersList);
-  $("#messages").append(
+  $(".messages").append(
     "<li><i><b>" + data.username + "</b> has disconnected</i></li>"
   );
 });
@@ -157,9 +143,23 @@ socket.on("matched", data => {
   console.log("match data: ", data);
 });
 
-socket.on("waiting", () => console.log("Waiting for user..."));
+socket.on("waiting", () => {
+  console.log("Waiting for user...");
+  $(".messages").append(
+    "<li><i><b>" +
+      "Waiting to connect you to the next available user!" +
+      "</b></i></li>"
+  );
+});
 
-socket.on("unmatched", () => console.log("UM.. Waiting for user..."));
+socket.on("unmatched", () => {
+  console.log("UM.. Waiting for user...");
+  $(".messages").append(
+    "<li><i><b>" +
+      "Waiting to connect you to the next available user!" +
+      "</b></i></li>"
+  );
+});
 
 // socket.on("users are matched", data => {
 //   console.log("users are matched - data: ", data);

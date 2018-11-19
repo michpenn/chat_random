@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Chat Random</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
     <link
       rel="stylesheet"
       type="text/css"
@@ -14,43 +19,111 @@
     />
   </head>
   <body>
-    <div id="login-area">
-      <div id="login-text"><h1>Login Page</h1></div>
-      <div id="login-form-area">
-        <form action="" id="login-form">
-          <input
-            id="username"
-            type="text"
-            placeholder="Username"
-            autocomplete="off"
-          />
-          <input id="login-submit" type="submit" value="Login" />
-        </form>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 login-area align-items-center mt-5 py-5">
+          <div class="login-area-wrapper shadow pt-5 rounded">
+            <div class="row justify-content-md-center align-items-center mb-2">
+              <div class="col-md-auto login-text">
+                <h1 class="display-3">Login Page</h1>
+              </div>
+            </div>
+            <div class="row justify-content-md-center align-items-center">
+              <div class="col-md-auto py-3 login-form-area">
+                <form id="login-form" class="needs-validation" novalidate>
+                  <div class="form-row">
+                    <div class="col-md-8">
+                      <label class="sr-only" for="username">Username</label>
+                      <input
+                        type="text"
+                        class="form-control form-control-lg mb-2 mr-sm-2"
+                        id="username"
+                        placeholder="Username"
+                        autocomplete="off"
+                        required
+                      />
+                      <div class="invalid-feedback">
+                        Please choose a username.
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <button
+                        type="submit"
+                        class="btn btn-outline-primary btn-lg mb-2"
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="chat-area">
-      <div id="users-area">
-        <div id="online-users-text"><h1>Online users:</h1></div>
-        <div id="online-users"><ul id="users"></ul></div>
-      </div>
-      <div id="message-area">
-        <div id="display-message-area"><ul id="messages"></ul></div>
-        <div id="message-form-area">
-          <form id="message-form">
-            <input
-              type="text"
-              id="message"
-              placeholder="Type your message..."
-              autocomplete="off"
-            />
-            <input type="submit" id="message-submit" value="Send" />
-          </form>
+      <div class="row">
+        <div class="col-12 chat-area">
+          <div class="row">
+            <div class="col-3 pt-5 users-area text-center">
+              <div class="online-users-text mt-5">
+                <h1 class="h1">Online users:</h1>
+                <ul class="users list-unstyled"></ul>
+              </div>
+            </div>
+            <div class="col-9 message-area">
+              <div class="display-message-area">
+                <ul class="messages list-unstyled"></ul>
+              </div>
+              <div class="message-form-area">
+                <form
+                  id="message-form"
+                  class="needs-validation mt-2"
+                  novalidate
+                >
+                  <div class="form-row">
+                    <div class="col-md-10">
+                      <label class="sr-only" for="message">Message</label>
+                      <input
+                        type="text"
+                        id="message"
+                        class="form-control form-control-lg"
+                        placeholder="Type Your Message..."
+                        autocomplete="off"
+                        required
+                      />
+                    </div>
+                    <div class="invalid-feedback">
+                      You can't send empty messages
+                    </div>
+                    <div class="col-md-2">
+                      <button
+                        type="submit"
+                        class="btn btn-outline-info btn-lg ml-1"
+                      >
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
